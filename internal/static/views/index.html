@@ -1,0 +1,40 @@
+<!DOCTYPE >
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width , initial-scale=1.0" />
+    <title>chat Room</title>
+    <script
+      src="https://unpkg.com/htmx.org@2.0.0"
+      integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw"
+      crossorigin="anonymous"
+    ></script>
+    <!-- HTMX Websockets extension https://htmx.org/extensions/web-sockets/ -->
+    <link href="./css/output.css" rel="stylesheet" />
+  </head>
+  <body class="bg-black py-8 ">
+    <div class="max-w-4xl mx-auto bg-zinc-800 shadow-md rounded-lg  px-2 py-2">
+      <div class=" flex flex-col h-[850px]">
+        <div class="flex justify-between items-center h-[850px]">
+          <!-- Messages will be appended here -->
+        </div>
+        <div class="px-3 py-2 border-t border-zinc-700 ">
+          <form id="form">
+            <div class="flex gap-2 ">
+              <input
+                class="flex-1 p-2  border-2 rounded-lg bg-zinc-50  focus:border-violet-800  border-purple-800 border-2 text-sm text-black"
+                type="text"
+                placeholder=" Messages ....."
+              />
+              <button
+                class="bg-gradient-to-r from-pink-700 to-violet-800 hover:bg-violet-950  text-white font-extrabold py-1.5 px-3 rounded-lg transition duration-300 ease-in-out text-sm w-[6rem]"
+              >
+                Send
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
