@@ -2,13 +2,17 @@ package websocket
 
 import (
 	"github.com/gorilla/websocket"
+	"github.com/joskeiner/go-myChat/internal/entities"
 )
 
-var upgrade = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
+type webSocketServer struct {
+	clients   map[*websocket.Conn]bool
+	broadcast chan *entities.Message
 }
 
-func GetUpGrader() websocket.Upgrader {
-	return upgrade
+func NewWebSocketServer() *webSocketServer {
+	return &webSocketServer{
+		clients:   make(map[*websocket.Conn]bool),
+		broadcast: make(chan *entities.Message),
+	}
 }
