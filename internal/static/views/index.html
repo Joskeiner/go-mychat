@@ -10,24 +10,37 @@
       crossorigin="anonymous"
     ></script>
     <!-- HTMX Websockets extension https://htmx.org/extensions/web-sockets/ -->
-    <link href="./css/output.css" rel="stylesheet" />
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-black py-8 ">
-    <div class="max-w-4xl mx-auto bg-zinc-800 shadow-md rounded-lg  px-2 py-2">
-      <div class=" flex flex-col h-[850px]">
-        <div class="flex justify-between items-center h-[850px]">
+  <body class="bg-black py-8">
+    <div
+      class="max-w-4xl mx-auto bg-zinc-800 shadow-md rounded-lg px-2 py-2"
+      hx-ext="ws"
+      ws-connect="/ws"
+    >
+      <div class="flex flex-col">
+        <div
+          id="messages"
+          class="flex flex-col justify-items-end items-center h-[850px] text-white pt-5"
+          hx-swap="beforeend"
+          hx-swap-obb="beforeend"
+        >
           <!-- Messages will be appended here -->
         </div>
-        <div class="px-3 py-2 border-t border-zinc-700 ">
-          <form id="form">
-            <div class="flex gap-2 ">
+        <div class="px-3 py-2 border-t border-zinc-700" x-reset-on-success>
+          <form id="form" ws-send x-reset-on-success>
+            <div class="flex gap-2">
               <input
-                class="flex-1 p-2  border-2 rounded-lg bg-zinc-50  focus:border-violet-800  border-purple-800 border-2 text-sm text-black"
+                id="messageInput"
+                name="text"
+                class="flex-1 p-2 border-2 rounded-lg bg-zinc-700 focus:border-violet-800 border-purple-800 border-2 text-sm text-white"
                 type="text"
                 placeholder=" Messages ....."
               />
               <button
-                class="bg-gradient-to-r from-pink-700 to-violet-800 hover:bg-violet-950  text-white font-extrabold py-1.5 px-3 rounded-lg transition duration-300 ease-in-out text-sm w-[6rem]"
+                type="submit"
+                class="bg-gradient-to-r from-pink-700 to-violet-800 hover:bg-violet-950 text-white font-extrabold py-1.5 px-3 rounded-lg transition duration-300 ease-in-out text-sm w-[6rem]"
               >
                 Send
               </button>

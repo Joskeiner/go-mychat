@@ -12,9 +12,6 @@ build :
 vet :
 	@echo "executing go vet"
 	@go vet ./...
-## tailwind dev
-css-watch:
-	@npx tailwindcss -i ./internal/static/views/css/input.css -o ./internal/static/views/css/output.css --watch
 ## dev
 dev:
 	@air

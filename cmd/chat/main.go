@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"html/template"
+	"log"
 	"net/http"
 
 	"github.com/joskeiner/go-myChat/internal/config"
 	"github.com/joskeiner/go-myChat/internal/server"
+	"github.com/joskeiner/go-myChat/pkg/websocket"
 )
 
 func main() {
@@ -15,26 +15,29 @@ func main() {
 
 // this function will execute the server and the dependecies
 func run() {
-
 	router := http.NewServeMux()
 	adr, basePath := config.LoandingDeps()
 
+	upgreade := websocket.NewUpgrade()
 	server := server.NewServer(adr, router)
 
-	tmpl := template.Must(template.ParseFiles(basePath + "/internal/static/views/index.html"))
+	connWebSocket := websocket.NewWebSocketServer()
+	// tmpl := template.Must(template.ParseFiles(basePath + "/internal/static/views/index.html"))
 	// server static files
-	fs := http.FileServer(http.Dir(basePath + "/internal/static/views"))
-	router.Handle("/files/", http.StripPrefix("/files/", fs))
+	// fs := http.FileServer(http.Dir(basePath + "/internal/static/"))
 
 	// router test
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, " test to my server")
-	})
-	// router to static file
-	router.HandleFunc("/static", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("content-type", "text/html; charset=utf-8")
-		tmpl.Execute(w, nil)
+		http.ServeFile(w, r, basePath+"/internal/static/views/index.html")
 	})
 
+	router.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		conn, err := upgreade.Upgrade(w, r, nil)
+		if err != nil {
+			log.Println(err)
+		}
+		connWebSocket.HandlerWebsocket(conn)
+	})
+	go connWebSocket.HandleMessage()
 	server.Start()
 }
